@@ -1,0 +1,15 @@
+ Static hostname: soc-ubuntu
+       Icon name: computer-vm
+         Chassis: vm 🖴
+      Machine ID: f830a06bc90b40bbb12ef49d7db8cff3
+         Boot ID: 1783e2f0515f4dde816a02927181685f
+  Virtualization: oracle
+Operating System: Ubuntu 26.04.1 LTS
+          Kernel: Linux 7.0.0-42-generic
+    Architecture: x86-64
+ Hardware Vendor: innotek GmbH
+  Hardware Model: VirtualBox
+Hardware Version: 1.2
+Firmware Version: VirtualBox
+   Firmware Date: Fri 2006-12-01
+    Firmware Age: 19y 11month 4d

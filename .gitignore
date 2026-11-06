@@ -1,0 +1,14 @@
+# Arquivos sensíveis
+.env
+*.pem
+*.key
+credentials.txt
+secrets.txt
+
+# Logs brutos do laboratório
+evidence/*.log
+
+# Arquivos temporários
+__pycache__/
+*.pyc
+*.tmp
