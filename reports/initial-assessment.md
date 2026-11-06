@@ -1,14 +1,13 @@
 # SOC Home Lab - Initial Assessment
 
 ## Objective
-Prepare a Linux endpoint for security monitoring
-and incident investigation.
+Prepare a Linux endpoint for security monitoring,
+log analysis, and incident investigation.
 
 ## Environment
 - Host OS: Windows 11
 - Virtualization: VirtualBox
-- Endpoint: Ubuntu Server 26.04.1
-- Hostname: soc-ubuntu
+- Endpoint: Ubuntu Server
 - SSH: Enabled
 - Firewall: UFW
 
@@ -17,14 +16,17 @@ and incident investigation.
 - Failed login simulation
 - Firewall configuration
 - System resource assessment
+- Python-based security log analysis
 
 ## Initial Findings
 - SSH service operational
-- Endpoint network interface identified
+- Network interface identified
 - Authentication events available for investigation
+- Security log analysis pipeline implemented
 
 ## Next Steps
-- Deploy Wazuh
-- Connect endpoint agent
-- Configure security monitoring
-- Investigate generated alerts
+- Expand automated detection rules
+- Improve event correlation
+- Implement MITRE ATT&CK mapping
+- Expand automated test coverage
+- Document security investigation procedures

@@ -1,14 +1,24 @@
-# Arquivos sensíveis
+# Sensitive files
 .env
 *.pem
 *.key
 credentials.txt
 secrets.txt
 
-# Logs brutos do laboratório
-evidence/*.log
+# Local evidence
+evidence/*
 
-# Arquivos temporários
+# Python
+.venv/
 __pycache__/
-*.pyc
+*.py[cod]
+
+# Temporary files
 *.tmp
+*.bak
+*~
+tests_temp.py
+
+# Generated reports
+reports/*.csv
+reports/*.json
