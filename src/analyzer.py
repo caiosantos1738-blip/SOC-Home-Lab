@@ -113,7 +113,10 @@ def analyze():
             ),
             "last_seen": serialize_timestamp(
                 alert["last_seen"]
-            )
+            ),
+            "mitre_technique_id": alert["mitre_technique_id"],
+            "mitre_technique_name": alert["mitre_technique_name"],
+            "mitre_tactic": alert["mitre_tactic"]
         })
 
     with OUTPUT_JSON.open("w", encoding="utf-8") as file:
@@ -123,7 +126,6 @@ def analyze():
             indent=4,
             ensure_ascii=False
         )
-
     # Statistics
     failed_count = sum(
         event["event"] == "FAILED_LOGIN"

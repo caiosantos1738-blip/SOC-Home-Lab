@@ -14,8 +14,30 @@ SUSPICIOUS_LOGIN_THRESHOLD = 3
 CORRELATION_WINDOW = timedelta(minutes=10)
 
 
+# MITRE ATT&CK mappings
+MITRE_MAPPINGS = {
+    "SSH_BRUTE_FORCE": {
+        "technique_id": "T1110.001",
+        "technique_name": "Password Guessing",
+        "tactic": "Credential Access"
+    },
+    "SSH_PASSWORD_SPRAYING": {
+        "technique_id": "T1110.003",
+        "technique_name": "Password Spraying",
+        "tactic": "Credential Access"
+    },
+    "SSH_FAILURES_FOLLOWED_BY_SUCCESS": {
+        "technique_id": "T1110",
+        "technique_name": "Brute Force",
+        "tactic": "Credential Access"
+    }
+}
+
+
 def make_alert(rule_id, severity, description, events):
-    """Build a standardized security alert."""
+    """Build a standardized security alert with MITRE ATT&CK mapping."""
+
+    mitre = MITRE_MAPPINGS[rule_id]
 
     return {
         "rule_id": rule_id,
@@ -24,7 +46,10 @@ def make_alert(rule_id, severity, description, events):
         "source_ip": events[-1]["source_ip"],
         "event_count": len(events),
         "first_seen": events[0]["timestamp"].isoformat(),
-        "last_seen": events[-1]["timestamp"].isoformat()
+        "last_seen": events[-1]["timestamp"].isoformat(),
+        "mitre_technique_id": mitre["technique_id"],
+        "mitre_technique_name": mitre["technique_name"],
+        "mitre_tactic": mitre["tactic"]
     }
 
 
@@ -155,3 +180,4 @@ def run_detections(events):
     alerts.extend(detect_suspicious_login(events))
 
     return alerts
+

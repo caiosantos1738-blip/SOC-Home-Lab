@@ -1,11 +1,8 @@
-HEAD
-Practical cybersecurity laboratory focused on Security Operations Center (SOC), defensive security, and threat detection.
-
 # Advanced Security Log Analyzer
 
-A Python-based security log analysis tool designed to identify suspicious SSH authentication activities through automated detection rules, event correlation, and security alert generation.
+A Python-based security log analysis tool designed to identify suspicious SSH authentication activities through automated detection rules, event correlation, MITRE ATT&CK mapping, and security alert generation.
 
-This project was developed as a hands-on cybersecurity portfolio project focused on **SOC Analyst, Blue Team, and Security Monitoring** skills.
+This project is part of a hands-on cybersecurity portfolio focused on **SOC Analyst, Blue Team, and Security Monitoring** skills.
 
 ## Project Overview
 
@@ -17,7 +14,7 @@ The detection engine currently supports three security scenarios:
 - **Password Spraying:** Identifies attempts involving multiple usernames from the same source IP.
 - **Suspicious Login:** Detects successful authentication following multiple failed login attempts.
 
-Sensitive information, including usernames and source IP addresses, is anonymized before report generation.
+Security alerts are enriched with MITRE ATT&CK technique information. Sensitive information, including usernames and source IP addresses, is pseudonymized before report generation.
 
 ## Features
 
@@ -28,6 +25,7 @@ Sensitive information, including usernames and source IP addresses, is anonymize
 - Password spraying detection.
 - Suspicious login detection.
 - Time-window-based event correlation.
+- MITRE ATT&CK technique mapping.
 - Username and IP address pseudonymization.
 - CSV security event reports.
 - JSON security alert reports.
@@ -41,39 +39,43 @@ Sensitive information, including usernames and source IP addresses, is anonymize
 | Regular Expressions | Log parsing |
 | CSV | Security event reporting |
 | JSON | Alert reporting |
-| IP Address Module | IP validation |
 | Unittest | Automated testing |
 | Linux / Ubuntu | Development environment |
 | Git / GitHub | Version control |
 
-**Dependencies:** The project currently uses Python standard library modules and does not require external Python packages.
+**Dependencies:** The project uses Python standard library modules and does not require external Python packages.
 
 ## Detection Rules
 
 | Detection Rule | Detection Criteria | Severity |
 |---|---|---|
-| SSH Brute Force | 5 failed login attempts within 5 minutes | HIGH |
+| SSH Brute Force | 5 failed attempts within 5 minutes | HIGH |
 | Password Spraying | 5 or more distinct usernames within 10 minutes from the same IP | HIGH |
 | Suspicious Login | Successful login following at least 3 failed attempts within 10 minutes | HIGH |
 
 These thresholds are configurable and intended for educational security monitoring. An alert indicates suspicious behavior, not definitive proof of a successful attack.
 
+## MITRE ATT&CK Integration
+
+The detection engine enriches generated alerts with MITRE ATT&CK technique identifiers, names, and tactics.
+
+| Detection Rule | Technique ID | Technique Name | Tactic |
+|---|---|---|---|
+| SSH Brute Force | T1110.001 | Password Guessing | Credential Access |
+| Password Spraying | T1110.003 | Password Spraying | Credential Access |
+| Suspicious Login | T1110 | Brute Force | Credential Access |
+
+The suspicious login mapping represents a behavioral correlation involving repeated authentication failures followed by a successful login. It does not independently confirm account compromise.
+
 ## Project Architecture
 
 ```text
-Advanced-Security-Log-Analyzer/
-│
-├── architecture/
-│
-├── documentation/
+soc-lab/
 │
 ├── evidence/
+│   └── ssh-auth.log
 │
 ├── reports/
-│
-├── screenshots/
-│
-├── scripts/
 │
 ├── src/
 │   ├── __init__.py
@@ -97,7 +99,7 @@ The analysis pipeline follows four main stages:
 
 **1. Log Collection and Parsing**
 
-The parser reads SSH authentication logs and extracts relevant information:
+The parser reads SSH authentication logs and extracts:
 
 - Timestamp
 - Event type
@@ -108,9 +110,9 @@ The parser reads SSH authentication logs and extracts relevant information:
 
 Authentication records are converted into structured Python dictionaries.
 
-**3. Threat Detection**
+**3. Threat Detection and MITRE Mapping**
 
-The detection engine evaluates authentication events using configurable thresholds and time windows.
+The detection engine evaluates authentication events using configurable thresholds and time windows. When suspicious behavior is identified, the corresponding MITRE ATT&CK information is attached to the alert.
 
 **4. Report Generation**
 
@@ -119,20 +121,20 @@ The analyzer generates two output files:
 | File | Description |
 |---|---|
 | `ssh-analysis.csv` | Sanitized authentication event report |
-| `security-alerts.json` | Generated security alerts |
+| `security-alerts.json` | Security alerts enriched with MITRE ATT&CK metadata |
 
 ## Installation
 
 Clone the repository:
 
 ```bash
-git clone https://github.com/caiosantos1738-blip/Advanced-Security-Log-Analyzer.git
+git clone https://github.com/caiosantos1738-blip/SOC-Home-Lab.git
 ```
 
 Navigate to the project directory:
 
 ```bash
-cd Advanced-Security-Log-Analyzer
+cd soc-lab
 ```
 
 Create a virtual environment:
@@ -176,20 +178,22 @@ reports/
 Execute the automated test suite:
 
 ```bash
-python3 -m unittest discover -s tests -v
+python3 -m unittest discover -v
 ```
 
-The current test suite covers:
+The current test suite validates:
 
 - Brute force detection.
 - Password spraying detection.
 - Suspicious login detection.
 - Behavior below detection thresholds.
-- End-to-end analysis and report generation.
+- MITRE ATT&CK mapping for all three detection rules.
+- Complete analysis pipeline and report generation.
+- Data anonymization during report export.
 
-**Current validation:** 5 automated tests passed.
+**Current validation: 8 automated tests passed.**
 
-## Example Detection Output
+## Example Detection Alert
 
 A simulated brute force scenario involving five failed SSH authentication attempts within two minutes generated the following alert:
 
@@ -201,7 +205,10 @@ A simulated brute force scenario involving five failed SSH authentication attemp
     "source_ip": "IP_001",
     "event_count": 5,
     "first_seen": "2026-11-06T14:00:00+00:00",
-    "last_seen": "2026-11-06T14:02:00+00:00"
+    "last_seen": "2026-11-06T14:02:00+00:00",
+    "mitre_technique_id": "T1110.001",
+    "mitre_technique_name": "Password Guessing",
+    "mitre_tactic": "Credential Access"
 }
 ```
 
@@ -218,13 +225,12 @@ The example uses a pseudonymized IP address and simulated authentication events.
 
 ## Skills Demonstrated
 
-This project demonstrates practical experience with:
-
 - Linux security log analysis.
 - Python scripting and automation.
 - SSH authentication monitoring.
 - Security event correlation.
 - Detection engineering fundamentals.
+- MITRE ATT&CK framework fundamentals.
 - Incident detection and alert classification.
 - Data sanitization.
 - Automated software testing.
@@ -234,9 +240,9 @@ This project demonstrates practical experience with:
 
 - Add Windows Event Log analysis.
 - Implement additional detection rules.
-- Integrate MITRE ATT&CK technique mapping.
 - Improve alert correlation and deduplication.
 - Add configurable detection thresholds.
+- Improve timestamp and timezone handling.
 - Generate visual security dashboards.
 - Expand automated test coverage.
 
@@ -247,4 +253,3 @@ This project is intended for educational purposes and cybersecurity portfolio de
 ---
 
 **Developed as a cybersecurity portfolio project focused on SOC Analysis and Blue Team operations.**
->>>>>>> a8191ca (Build advanced security log analyzer)
